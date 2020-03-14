@@ -1,5 +1,5 @@
 package cm;
 
 public enum CarParkKind {
-    STAFF, STUDENT, MANAGEMENT, VISITOR
+    STAFF, STUDENT, MANAGEMENT, VISITOR 
 }
