@@ -93,81 +93,37 @@ public class Rate {
         }
         return isValid;
     }
-    public BigDecimal calculate(Period periodStay) {
+    public BigDecimal calculate(Period periodStay ,CarParkKind kind) {
         int normalRateHours = periodStay.occurences(normal);
         int reducedRateHours = periodStay.occurences(reduced);
         BigDecimal initialPrice = (this.hourlyNormalRate.multiply(BigDecimal.valueOf(normalRateHours))).add(this.hourlyReducedRate.multiply(BigDecimal.valueOf(reducedRateHours)));
         double base = initialPrice.doubleValue();
-        BigDecimal finalPrice = null;
+        BigDecimal finalPrice = initialPrice;
 
-
-        //If Student
-        if (kind == CarParkKind.STUDENT)
-        {
-            BigDecimal StudentThreshold = new BigDecimal(5.50);
-            BigDecimal seventyFivePercent = new BigDecimal(0.75);
-            //If less than 5.50, return baseCost
-            if(initialPrice.compareTo(StudentThreshold) <= 0)
-            {
-                return initialPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
-            //return  discounted price 25% discount over 550
-            else
-            {
-                return initialPrice.subtract(StudentThreshold).multiply(seventyFivePercent).add(StudentThreshold).setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
-
-        }
 
         //If Visitor
         if (kind == CarParkKind.VISITOR) {
-            //If baseCost is less than 8, Cost is free
-            if (base <= 8) {
-                finalPrice = new BigDecimal(0);
-            }
-            //Else, finalCost is reduced by 8 and 50% discount on the remainder
-            else
-            {
-                finalPrice = new BigDecimal((base - 8));
-                finalPrice = finalPrice.divide(new BigDecimal(2));
-                return finalPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
+            finalPrice = new VisitorCalc().calculation(initialPrice);
         }
 
-        //If Management
-        else if (kind == CarParkKind.MANAGEMENT) {
-            //If base cost is less than 3, payment should be 3
-            if (base <= 3)
-            {
-                finalPrice = new BigDecimal(3);
-                return finalPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
-            //Otherwise, require regular payment
-            else
-            {
-                finalPrice = initialPrice;
-                return finalPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
+        //If Student
+        if (kind == CarParkKind.STUDENT) {
+            finalPrice = new StudentCalc().calculation(initialPrice);
         }
 
         //If Staff
-        if (kind == CarParkKind.STAFF)
-        {
-            BigDecimal maximumPayment = new BigDecimal(16);
-            //If base cost is less than 16, return initial cost
-            if(initialPrice.compareTo(maximumPayment) <= 0)
-            {
-                return initialPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
-            }
-            // Else return the maximum payable of 16
-            else
-            {
-                return maximumPayment;
-            }
+        if (kind == CarParkKind.STAFF) {
+            finalPrice = new StaffCalc().calculation(initialPrice);
+
         }
+        
+        //If Management
+        else if (kind == CarParkKind.MANAGEMENT) {
+            finalPrice = new ManagementCalc().calculation(initialPrice);
+        }
+
 
         return finalPrice.setScale(2, BigDecimal.ROUND_HALF_EVEN);
     }
-
 
 }

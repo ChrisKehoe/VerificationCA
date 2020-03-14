@@ -31,7 +31,7 @@ public class MurphyKehoeChrisTestTask3 {
 
         Period Stay = new Period(6,12);
 
-        Assert.assertEquals(testRate.calculate(Stay) ,new BigDecimal(13.5));
+        Assert.assertEquals(testRate.calculate(Stay,kind) ,new BigDecimal("13.50"));
     }
 
     @Test(expected = NullPointerException.class)
@@ -54,7 +54,7 @@ public class MurphyKehoeChrisTestTask3 {
 
         Period Stay = null;
 
-        Assert.assertEquals(testRate.calculate(Stay), new BigDecimal(15));
+        Assert.assertEquals(testRate.calculate(Stay,kind), new BigDecimal(15));
     }
 
 
@@ -510,7 +510,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1,6);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(3.50));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("3.50"));
     }
 
     @Test
@@ -532,7 +532,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(2,4);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(0.00));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("0.00"));
     }
     //first 8 is free
     @Test
@@ -554,7 +554,8 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(2,5);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(0.00));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("0.00"));
+
     }
 
     @Test
@@ -576,7 +577,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(9,10);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(3.00));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("3.00"));
     }
 
     @Test
@@ -598,7 +599,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1,4);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(6.00));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("6.00"));
     }
 
     @Test
@@ -616,7 +617,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1,4);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(3));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("3.00"));
     }
 
     @Test
@@ -637,7 +638,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1, 3);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal("5.50"));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("5.50"));
     }
 
     @Test
@@ -659,7 +660,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1, 6);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal("16.38"));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("16.38"));
     }
 
     @Test
@@ -681,7 +682,28 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1, 4);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(9.00));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("9.00"));
+    }
+
+
+    @Test
+    public void calculateStaffGreaterThanMax() {
+        ArrayList<Period> normalPeriod = new ArrayList<Period>();
+        ArrayList<Period> reducedPeriod = new ArrayList<Period>();
+
+        Period period1 = new Period(0, 7);
+        Period period2 = new Period(8, 12);
+
+        normalPeriod.add(period1);
+        reducedPeriod.add(period2);
+        CarParkKind kind = CarParkKind.STAFF;
+        BigDecimal normal = new BigDecimal(10);
+        BigDecimal reduced = new BigDecimal(0);
+
+        Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
+        Period periodStay = new Period(1, 7);
+
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("60.00"));
     }
 
     @Test
@@ -703,27 +725,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
         Period periodStay = new Period(1, 5);
 
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(16));
-    }
-
-    @Test
-    public void calculateStaffGreaterThanMax() {
-        ArrayList<Period> normalPeriod = new ArrayList<Period>();
-        ArrayList<Period> reducedPeriod = new ArrayList<Period>();
-
-        Period period1 = new Period(0, 7);
-        Period period2 = new Period(8, 12);
-
-        normalPeriod.add(period1);
-        reducedPeriod.add(period2);
-        CarParkKind kind = CarParkKind.STAFF;
-        BigDecimal normal = new BigDecimal(10);
-        BigDecimal reduced = new BigDecimal(0);
-
-        Rate testRate = new Rate(kind, normal, reduced, reducedPeriod, normalPeriod);
-        Period periodStay = new Period(1, 7);
-
-        assertEquals(testRate.calculate(periodStay), new BigDecimal(16));
+        assertEquals(testRate.calculate(periodStay,kind), new BigDecimal("16.00"));
     }
 
 }

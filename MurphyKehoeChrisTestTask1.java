@@ -31,7 +31,7 @@ public class MurphyKehoeChrisTestTask1 {
 
         Period Stay = new Period(6,12);
 
-        Assert.assertEquals(testRate.calculate(Stay) ,new BigDecimal(55));
+        Assert.assertEquals(testRate.calculate(Stay,kind) ,new BigDecimal(55));
     }
 
     @Test(expected = NullPointerException.class)
@@ -54,7 +54,7 @@ public class MurphyKehoeChrisTestTask1 {
 
         Period Stay = null;
 
-        Assert.assertEquals(testRate.calculate(Stay), new BigDecimal(15));
+        Assert.assertEquals(testRate.calculate(Stay,kind), new BigDecimal(15));
     }
 
 
