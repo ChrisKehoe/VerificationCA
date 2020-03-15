@@ -491,7 +491,7 @@ public class MurphyKehoeChrisTestTask3 {
         Rate testRate = new Rate(kind, normalRate, reducedRate, reducedPeriod, normalPeriod);
     }
 
-    //------------------------------------Task Three Tests--------------------------------------------------------
+    //Task 3 Tests
 
     @Test
     public void calculateVisitorReducedRateTest() {
